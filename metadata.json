@@ -1,0 +1,5 @@
+{
+  "name": "VERSE RUNNER",
+  "description": "A high-speed 3D endless runner inspired by Subway Surfers, built with Three.js and React.",
+  "requestFramePermissions": []
+}
