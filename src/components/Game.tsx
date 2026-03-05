@@ -58,6 +58,8 @@ export const Game: React.FC = () => {
 
   const [isMuted, setIsMuted] = useState(false);
   const [activePowerUps, setActivePowerUps] = useState<{ nitro: number; magnet: number }>({ nitro: 0, magnet: 0 });
+  const [showAnalyticsInfo, setShowAnalyticsInfo] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const startGame = () => {
     if (gameRef.current) {
@@ -878,40 +880,73 @@ export const Game: React.FC = () => {
           <span className="text-white font-black tracking-tighter text-lg">VERSE RUNNER</span>
         </div>
         
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <button 
-            onClick={toggleMute}
-            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest cursor-pointer"
+            onClick={() => setShowMenu(!showMenu)}
+            className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center text-white z-50 cursor-pointer"
           >
-            {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+            {showMenu ? '✕' : '☰'}
           </button>
-          {(gameState.isStarted || gameState.isGameOver) && (
-            <button 
-              onClick={goHome}
-              className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest cursor-pointer"
-            >
-              🔙 Home
-            </button>
-          )}
-          <a 
-            href="https://t.me/GetVerse" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.36-.49.99-.75 3.88-1.69 6.46-2.8 7.74-3.33 3.68-1.53 4.44-1.8 4.94-1.81.11 0 .35.03.5.16.13.1.17.24.18.34.02.06.02.18-.01.29z"/></svg>
-            Telegram
-          </a>
-          <a 
-            href="https://x.com/VerseEcosystem" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-            X
-          </a>
         </div>
+
+        {/* Dropdown Menu */}
+        {showMenu && (
+          <div className="absolute top-20 right-6 w-64 bg-[#1a0b2e]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="p-2 flex flex-col gap-1">
+              <button 
+                onClick={() => { toggleMute(); setShowMenu(false); }}
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white flex items-center gap-3 transition-colors cursor-pointer"
+              >
+                <span className="text-lg">{isMuted ? '🔇' : '🔊'}</span>
+                <span className="text-xs font-bold uppercase tracking-widest">{isMuted ? 'Unmute' : 'Mute'}</span>
+              </button>
+              
+              {(gameState.isStarted || gameState.isGameOver) && (
+                <button 
+                  onClick={() => { goHome(); setShowMenu(false); }}
+                  className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white flex items-center gap-3 transition-colors cursor-pointer"
+                >
+                  <span className="text-lg">🔙</span>
+                  <span className="text-xs font-bold uppercase tracking-widest">Home</span>
+                </button>
+              )}
+
+              <div className="h-px bg-white/5 my-1" />
+
+              <a 
+                href="https://t.me/GetVerse" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white flex items-center gap-3 transition-colors"
+                onClick={() => setShowMenu(false)}
+              >
+                <svg className="w-5 h-5 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.36-.49.99-.75 3.88-1.69 6.46-2.8 7.74-3.33 3.68-1.53 4.44-1.8 4.94-1.81.11 0 .35.03.5.16.13.1.17.24.18.34.02.06.02.18-.01.29z"/></svg>
+                <span className="text-xs font-bold uppercase tracking-widest">Telegram</span>
+              </a>
+
+              <a 
+                href="https://x.com/VerseEcosystem" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white flex items-center gap-3 transition-colors"
+                onClick={() => setShowMenu(false)}
+              >
+                <svg className="w-5 h-5 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                <span className="text-xs font-bold uppercase tracking-widest">X (Twitter)</span>
+              </a>
+
+              <div className="h-px bg-white/5 my-1" />
+
+              <button 
+                onClick={() => { setShowAnalyticsInfo(true); setShowMenu(false); }}
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white flex items-center gap-3 transition-colors cursor-pointer"
+              >
+                <span className="text-lg">📊</span>
+                <span className="text-xs font-bold uppercase tracking-widest">Analytics</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* UI Overlay */}
@@ -1061,6 +1096,129 @@ export const Game: React.FC = () => {
 
           <div className="mt-auto pb-6 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
             built by Verse STAKING bosses(@desi_boii7, @TRAVI5s)🎮❤️🔥
+          </div>
+        </div>
+      )}
+
+      {showAnalyticsInfo && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-md z-[100] p-4 overflow-y-auto">
+          <div className="bg-[#F8F9FA] w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative flex flex-col animate-in fade-in zoom-in duration-300">
+            {/* Header */}
+            <div className="p-6 flex items-center justify-between bg-white border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">Verse Analytics</h3>
+              </div>
+              <button 
+                onClick={() => setShowAnalyticsInfo(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content Area */}
+            <div className="p-6 flex flex-col gap-4 max-h-[70vh] overflow-y-auto">
+              {/* Total Reach Card */}
+              <div className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <div className="bg-green-50 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full">+12%</div>
+                </div>
+                <div className="text-4xl font-black text-gray-900 mb-1">132</div>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Reach</div>
+              </div>
+
+              {/* Active Nodes Card */}
+              <div className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Live</span>
+                  </div>
+                </div>
+                <div className="text-4xl font-black text-gray-900 mb-1">2</div>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Nodes</div>
+              </div>
+
+              {/* Total Events Card */}
+              <div className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </div>
+                <div className="text-4xl font-black text-gray-900 mb-1">5</div>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Events</div>
+              </div>
+
+              {/* Weekly Engagement Chart */}
+              <div className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Weekly Engagement</h4>
+                  <span className="text-[10px] font-bold text-gray-300">Last 7 Days</span>
+                </div>
+                <div className="flex items-end justify-between h-32 gap-2">
+                  {[
+                    { day: 'Mon', val: 40 },
+                    { day: 'Tue', val: 55 },
+                    { day: 'Wed', val: 45 },
+                    { day: 'Thu', val: 85 },
+                    { day: 'Fri', val: 35 },
+                    { day: 'Sat', val: 60 },
+                    { day: 'Sun', val: 75, active: true },
+                  ].map((item, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-2 group relative">
+                      {item.active && (
+                        <div className="absolute -top-10 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-lg shadow-lg whitespace-nowrap z-10">
+                          Sun visits: 24
+                        </div>
+                      )}
+                      <div 
+                        className={`w-full rounded-t-lg transition-all duration-500 ${item.active ? 'bg-blue-600' : 'bg-gray-800 hover:bg-gray-700'}`}
+                        style={{ height: `${item.val}%` }}
+                      />
+                      <span className="text-[10px] font-bold text-gray-400">{item.day}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tabs Navigation */}
+              <div className="bg-gray-100/50 p-1.5 rounded-2xl flex gap-1 mt-2">
+                {['Upcoming', 'Live', 'Past', 'All'].map((tab, i) => (
+                  <button 
+                    key={tab}
+                    className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${i === 0 ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 bg-white border-t border-gray-100">
+              <button 
+                onClick={() => setShowAnalyticsInfo(false)}
+                className="w-full py-4 bg-gray-900 text-white font-black rounded-2xl hover:bg-black transition-all shadow-lg uppercase tracking-widest text-xs"
+              >
+                Close Dashboard
+              </button>
+            </div>
           </div>
         </div>
       )}
