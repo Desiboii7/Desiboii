@@ -1213,7 +1213,7 @@ export const Game: React.FC = () => {
               <div className="mt-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
                 <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tracking Script</h4>
                 <div className="bg-black/5 p-3 rounded-xl font-mono text-[9px] text-gray-600 break-all leading-relaxed">
-                  &lt;script defer data-domain="desiboii7-seven.vercel.app,..." src="https://analytics.verse.community/js/script.js"&gt;&lt;/script&gt;
+                  &lt;script defer data-domain="desiboii7.vercel.app,..." src="https://analytics.vgdh.io/js/script.js"&gt;&lt;/script&gt;
                 </div>
                 <p className="mt-2 text-[9px] text-gray-400 font-medium italic">
                   Note: If stats aren't updating, please ensure your ad-blocker is disabled for this domain.
